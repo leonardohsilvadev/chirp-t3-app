@@ -1,9 +1,8 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -24,6 +23,26 @@ const CreatePostWizard = () => {
         placeholder="Type some emojis!"
       />
     </div>
+  )
+}
+
+type PostWithUser = RouterOutputs["posts"]["getAll"][number];
+
+const PostView = ({ post, author }: PostWithUser) => {
+  return (
+    <div key={post.id} className="flex p-4 gap-3 border-b border-slate-400">
+      <img
+        src={author.profileImageUrl}
+        alt="Profile Image"
+        className="w-14 h-14 rounded-full"
+      />
+      <div className="flex flex-col">
+        <div className="flex text-slate-300">
+          <span>{`@${author.username}`}</span>
+        </div>
+        <span>{post.content}</span>
+      </div>
+  </div>
   )
 }
 
@@ -54,10 +73,8 @@ const Home: NextPage = () => {
             {!!user.isSignedIn && <CreatePostWizard />}
           </div>
           <div className="flex flex-col">
-            {data?.map((({ post, author }) => (
-              <div key={post.id} className="p-8 border-b border-slate-400">
-                {post.content}
-              </div>
+            {data?.map(((post) => (
+              <PostView key={post.post.id} {...post} />
             )))}
           </div>
         </div>
