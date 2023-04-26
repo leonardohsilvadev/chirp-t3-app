@@ -18,4 +18,4 @@ const Loader = () => {
   )
 }
 
-export default Loader
+export { LoadingSpinner, Loader }
