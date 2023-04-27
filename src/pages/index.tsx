@@ -1,13 +1,11 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
-import Head from "next/head";
-
 import { type RouterOutputs, api } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
-import { Loader, LoadingSpinner } from "~/components";
+import { Loader, LoadingSpinner, PageLayout } from "~/components";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -129,20 +127,18 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <main className="flex justify-center h-screen">
-        <div className="h-full w-full md:max-w-2xl border-x border-slate-400">
-          <div className="flex border-b border-slate-400 p-4">
-            {!isSignedIn && (
-              <div className="flex justify-center">
-                <SignInButton />
-              </div>
-            )}
-            {!!isSignedIn && <CreatePostWizard />}
-          </div>
-
-          <Feed />
+      <PageLayout>
+        <div className="flex border-b border-slate-400 p-4">
+          {!isSignedIn && (
+            <div className="flex justify-center">
+              <SignInButton />
+            </div>
+          )}
+          {!!isSignedIn && <CreatePostWizard />}
         </div>
-      </main>
+
+        <Feed />
+      </PageLayout>
     </>
   );
 };
